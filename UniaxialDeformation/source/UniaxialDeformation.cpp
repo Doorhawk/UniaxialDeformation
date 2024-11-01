@@ -5,39 +5,6 @@
 
 
 
-void changeNumberFormat() {
-    ifstream ffuin("output/uOut.csv");
-    ifstream ffsin("output/sOut.csv");
-
-    ofstream ffuout("output/uOut1.csv");
-    ofstream ffsout("output/sOut1.csv");
-
-
-    char ch;
-    while (!ffuin.eof()) {
-        ch = ffuin.get();
-        if (ch == '.') {
-            ch = ',';
-        }
-        ffuout << ch;
-    }
-    while (!ffsin.eof()) {
-        ch = ffsin.get();
-        if (ch == '.') {
-            ch = ',';
-        }
-        ffsout << ch;
-    }
-
-    ffsin.close();
-    ffuin.close();
-    ffsout.close();
-    ffuout.close();
-
-    remove("output/uOut.csv");
-    remove("output/sOut.csv");
-
-}
 
 int main()
 {
@@ -50,6 +17,8 @@ int main()
     double f0l = 0, f0r = 0, v0l = 0, v0r = 0;
     bool printAnalit = false;
     bool numberFormat = true;
+    string separator;
+
 
     string s;
     fin >> s >> n;
@@ -68,8 +37,9 @@ int main()
     fin >> s >> v0r;
     fin >> s >> printAnalit;
     fin >> s >> numberFormat;
-
-
+    fin >> s; 
+    getline(fin,separator);
+    separator = separator.substr(2,separator.length()-3);
 
     if (n <=1 || Tmax <= 0 || l <= 0 || ro0 <= 0 || K <= 0 || G <= 0) {
         cout << "Error - parameter must be > 0 and n > 1";
@@ -98,23 +68,16 @@ int main()
         }
     }
 
-    FEM fem(n,l,ro0,K,G);
+    FEM fem(n,l,ro0,K,G,Tmax);
     fem.set_border_f(leftF, f0l, rightF, f0r);
     fem.set_border_v(leftV, v0l, rightV, v0r);
-    fem.set_print_parametres(printAnalit);
+    fem.set_print_parametres(printAnalit, numberFormat,separator);
 
-    fem.solve(Tmax);
+    fem.solve();
 
     fin.close();
 
-    if (numberFormat) {
-        changeNumberFormat();
-    }
-    else {
-        remove("output/uOut1.csv");
-        remove("output/sOut1.csv");
-    }
-    
+    cout << endl << "Solution is complete" << endl;
     cout <<endl<< "Press Enter"<<endl;
     cin.get();
     

@@ -36,6 +36,8 @@ private:
     vector<vector<double>> dsigm;  //  dsigm  - девиатор тензора напряжений
     vector<vector<double>> sigma;  //  sigma  - полный тензор напряжений
 
+    double Tmax;
+
     bool is_v0_left, is_v0_right;  //  есть ли краевые условия на левом/правом конеце по СКОРОСТИ
     double v0_l, v0_r;             //  если есть то какая на нем задана скорость скорость
 
@@ -43,10 +45,12 @@ private:
     double f0_l, f0_r;             //  если есть то какая на нем задана сила
 
     bool printAS; // печатать ли аналитическое решение
-
+    bool numberFormat;
+    string sep;
     AnalitcalSolution ana;
     fstream ffu;
     fstream ffs;
+    int printCounter;
 
     void set_border_v();
     void set_border_f();
@@ -62,12 +66,12 @@ private:
     void printSelectedInformation();
     void step();
 public:
-    FEM(int _n, double _l, double _ro0, double _K, double _G);
+    FEM(int _n, double _l, double _ro0, double _K, double _G,double _Tmax);
 
     void set_border_v(bool left1, double v0_l1, bool right1, double v0_r1);
     void set_border_f(bool left1, double f0_l1, bool right1, double f0_r1);
-    void set_print_parametres(bool printAnalitcalSolution);
+    void set_print_parametres(bool printAnalitcalSolution, bool numberFormatIsdot, string& separator);
 
-    void solve(double Tmax);
+    void solve();
 
 };

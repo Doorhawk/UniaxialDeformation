@@ -1,5 +1,15 @@
 #include "FiniteElementMethod.h"
 
+#include <locale>
+class comma : public numpunct<char> {
+public:
+    comma() : numpunct<char>() {}
+protected:
+    char do_decimal_point() const {
+        return ',';
+    }
+};
+
 void FEM::set_border_v() {
     if (is_v0_left) {
         v[0] = v0_l;
@@ -107,36 +117,45 @@ void FEM::step() {
 }
 void FEM::printSelectedInformation() {
 
-    cout << t << endl;
 
-    ffs << t << ";";
-    ffs << sigma[0][0] << ";";
-    ffs << sigma[(n - 2) / 2][0] << ";";
+    if (t > Tmax / 10 * printCounter) {
+        cout << 10 * printCounter << "%" << endl;
+        printCounter++;
+    }
+    
+    
+    ffs<< t<<sep;
+    ffs << sigma[0][0] << sep;
+    ffs << sigma[(n - 2) / 2][0] << sep;
     if (printAS) {
-        ffs << ana.s(0, t, l, f0_r, ro0, c,10000) << ";";
-        ffs << ana.s(l / 2, t, l, f0_r, ro0, c,10000) << ";";
+        ffs << ana.s(0, t, l, f0_r, ro0, c, 10000) << sep;
+        ffs << ana.s(l / 2, t, l, f0_r, ro0, c, 10000) << sep;
     }
     ffs << endl;
 
-
-    ffu << t << ";";
-    ffu << u[n - 1] << ";";
-    ffu << u[(n - 1) / 2] << ";";
+    ffu<<t << sep;
+    ffu << u[n - 1] << sep;
+    ffu << u[(n - 1) / 2] << sep;
     if (printAS) {
-        ffu << ana.u(l, t, l, f0_r, ro0, c,10000) << ";";
-        ffu << ana.u(l / 2, t, l, f0_r, ro0, c,10000) << ";";
+        ffu << ana.u(l, t, l, f0_r, ro0, c, 10000) << sep;
+        ffu << ana.u(l / 2, t, l, f0_r, ro0, c, 10000) << sep;
     }
     ffu << endl;
 
 }
 
-FEM::FEM(int _n, double _l, double _ro0, double _K, double _G) {
+
+
+FEM::FEM(int _n, double _l, double _ro0, double _K, double _G,double _Tmax) {
+
+    printCounter = 0;
 
     n = _n;
     l = _l;
     ro0 = _ro0;
     G = _G;   
     K = _K;
+    Tmax = _Tmax;
 
     E = 9 * K * G / (3 * K + G);
     Nu = (3 * K - 2 * G) / (2 * (3 * K + G));
@@ -207,32 +226,45 @@ void FEM::set_border_f(bool left1, double f0_l1, bool right1, double f0_r1) {
     is_f0_right = right1;
     f0_r = f0_r1;
 }
-void FEM::set_print_parametres(bool printAnalitcalSolution) {
+void FEM::set_print_parametres(bool printAnalitcalSolution, bool numberFormatIsdot, string& separator) {
 
+
+    if (!numberFormat) {
+        locale loccomma(cout.getloc(), new comma);
+        ffu.imbue(loccomma);
+        ffs.imbue(loccomma);
+    }
+
+    sep = separator;
+    numberFormat = numberFormatIsdot;
     printAS = printAnalitcalSolution;
 
     ffu.open("output/uOut.csv", ios::out);
     ffs.open("output/sOut.csv", ios::out);
-    ffu << "Time;\"U(l)\";\"U(l/2)\";";
+    ffu << "Time"<<sep<<"\"U(l)\""<<sep<<"\"U(l/2)\""<<sep;
     if (printAS) {
-        ffu << "\"U(l)A\";\"U(l/2)A\"";
+        ffu << "\"U(l)A\""<<sep<<"\"U(l/2)A\""<<sep;
     }
     ffu << endl;
 
-    ffs << "Time;\"S(0l)\";\"S(l/2)\";";
+    ffs << "Time"<<sep<<"\"S(0l)\""<<sep<<"\"S(l/2)\""<<sep;
     if (printAS) {
-        ffs << "\"S(0l)An\";\"S(l/2)An\"";
+        ffs << "\"S(0l)An\""<<sep<<"\"S(l/2)An\""<<sep;
     }
     ffs << endl;
 
-    cout << "t = ";
+    cout << "Start"<<endl;
 }
 
-void FEM::solve(double Tmax) {
+
+void FEM::solve() {
     while (t < Tmax) {
         printSelectedInformation();
         step();
     }
+    cout << 100 << "%" << endl;
     ffs.close();
     ffu.close();
 }
+
+
