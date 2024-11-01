@@ -14,10 +14,10 @@ private:
 
     double K;        //  K      - модуль обьемного сжатия 
     double G;        //  G      - модуль сдвига
-    double E;        // - модуль юнга
-    double Nu;       // - кэф пуассона
-    double c;        // - скорость звука
-    int n;           //  n      - количество точек, (n-1) - количество ячеек
+    double E;        //  E      - модуль юнга
+    double Nu;       //  Nu     - кэф пуассона
+    double c;        //  c      - скорость звука в среде
+    int n;           //  n      - количество узлов, (n-1) - количество ячеек
     double l;        //  l      - длинна прямой
     double ro0;      //  ro0    - начальная плотность
     double t;        //  t      - время
@@ -35,19 +35,19 @@ private:
     vector<double> psigm;   //  psigm  - шаровой тензор напряжений
     vector<vector<double>> dsigm;  //  dsigm  - девиатор тензора напряжений
     vector<vector<double>> sigma;  //  sigma  - полный тензор напряжений
-   
-    bool is_v0_left, is_v0_right; //  есть ли краевые условия на левом/правом конеце по СКОРОСТИ
+
+    bool is_v0_left, is_v0_right;  //  есть ли краевые условия на левом/правом конеце по СКОРОСТИ
     double v0_l, v0_r;             //  если есть то какая на нем задана скорость скорость
 
-    bool is_f0_left, is_f0_right; //  есть ли краевые условия на левом/правом конеце по СИЛЕ
+    bool is_f0_left, is_f0_right;  //  есть ли краевые условия на левом/правом конеце по СИЛЕ
     double f0_l, f0_r;             //  если есть то какая на нем задана сила
 
-    bool printAS;
+    bool printAS; // печатать ли аналитическое решение
 
     AnalitcalSolution ana;
     fstream ffu;
     fstream ffs;
-        
+
     void set_border_v();
     void set_border_f();
     void set_start();
@@ -64,11 +64,10 @@ private:
 public:
     FEM(int _n, double _l, double _ro0, double _K, double _G);
 
-    void solve(double Tmax);
-
     void set_border_v(bool left1, double v0_l1, bool right1, double v0_r1);
     void set_border_f(bool left1, double f0_l1, bool right1, double f0_r1);
     void set_print_parametres(bool printAnalitcalSolution);
 
-    
+    void solve(double Tmax);
+
 };

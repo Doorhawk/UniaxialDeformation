@@ -1,7 +1,5 @@
 #include "FiniteElementMethod.h"
 
-
-
 void FEM::set_border_v() {
     if (is_v0_left) {
         v[0] = v0_l;
@@ -94,7 +92,6 @@ void FEM::correct_v() {
     }
 }
 
-
 void FEM::step() {
 
     calc_dti_ro();
@@ -131,14 +128,6 @@ void FEM::printSelectedInformation() {
     }
     ffu << endl;
 
-}
-
-
-void FEM::solve(double Tmax) {
-    while (t < Tmax) {
-        printSelectedInformation();
-        step();
-    }
 }
 
 FEM::FEM(int _n, double _l, double _ro0, double _K, double _G) {
@@ -239,3 +228,9 @@ void FEM::set_print_parametres(bool printAnalitcalSolution) {
     cout << "t = ";
 }
 
+void FEM::solve(double Tmax) {
+    while (t < Tmax) {
+        printSelectedInformation();
+        step();
+    }
+}
