@@ -233,4 +233,6 @@ void FEM::solve(double Tmax) {
         printSelectedInformation();
         step();
     }
+    ffs.close();
+    ffu.close();
 }
