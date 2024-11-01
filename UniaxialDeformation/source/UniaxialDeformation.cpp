@@ -1,7 +1,43 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <cstdio>
 #include "FiniteElementMethod.h"
 
+
+
+void changeNumberFormat() {
+    ifstream ffuin("output/uOut.csv");
+    ifstream ffsin("output/sOut.csv");
+
+    ofstream ffuout("output/uOut1.csv");
+    ofstream ffsout("output/sOut1.csv");
+
+
+    char ch;
+    while (!ffuin.eof()) {
+        ch = ffuin.get();
+        if (ch == '.') {
+            ch = ',';
+        }
+        ffuout << ch;
+    }
+    while (!ffsin.eof()) {
+        ch = ffsin.get();
+        if (ch == '.') {
+            ch = ',';
+        }
+        ffsout << ch;
+    }
+
+    ffsin.close();
+    ffuin.close();
+    ffsout.close();
+    ffuout.close();
+
+    remove("output/uOut.csv");
+    remove("output/sOut.csv");
+
+}
 
 int main()
 {
@@ -13,6 +49,7 @@ int main()
     bool leftF = false, rightF = false, leftV = false, rightV = false;
     double f0l = 0, f0r = 0, v0l = 0, v0r = 0;
     bool printAnalit = false;
+    bool numberFormat = true;
 
     string s;
     fin >> s >> n;
@@ -30,6 +67,7 @@ int main()
     fin >> s >> v0l;
     fin >> s >> v0r;
     fin >> s >> printAnalit;
+    fin >> s >> numberFormat;
 
 
 
@@ -69,8 +107,14 @@ int main()
 
     fin.close();
 
+    if (numberFormat) {
+        changeNumberFormat();
+    }
+    
     cout <<endl<< "Press Enter"<<endl;
     cin.get();
+    
+    
 
     return 0;
 }

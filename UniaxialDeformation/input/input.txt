@@ -15,4 +15,5 @@ f0r=	-1000000000
 v0l=	0
 v0r=	0
 
-printAnalit= 1
+print_ànalytical_solution= 1
+change_number_format(,)= 1
