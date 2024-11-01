@@ -132,6 +132,7 @@
     <ClCompile Include="source\UniaxialDeformation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="comma.h" />
     <ClInclude Include="source\AnalyticalSolution.h" />
     <ClInclude Include="source\FiniteElementMethod.h" />
   </ItemGroup>

@@ -1,14 +1,6 @@
 #include "FiniteElementMethod.h"
 
-#include <locale>
-class comma : public numpunct<char> {
-public:
-    comma() : numpunct<char>() {}
-protected:
-    char do_decimal_point() const {
-        return ',';
-    }
-};
+
 
 void FEM::set_border_v() {
     if (is_v0_left) {

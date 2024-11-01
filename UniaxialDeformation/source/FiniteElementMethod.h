@@ -1,4 +1,4 @@
-
+#pragma once
 #include "AnalyticalSolution.h"
 #include <fstream>
 #include <string>
