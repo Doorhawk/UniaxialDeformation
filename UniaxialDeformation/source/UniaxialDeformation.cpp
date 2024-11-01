@@ -59,6 +59,11 @@ int main()
 
     fem.solve(Tmax);
 
+
+    cout <<endl<< "Press Enter"<<endl;
+    char ch;
+    cin >> ch;
+
     return 0;
 }
 
