@@ -10,48 +10,59 @@
 using namespace std;
 
 class FEM {
+public:
+    FEM(int _n, double _l, double _ro0, double _K, double _G, double _Tmax);
+
+    void set_border_v(bool left1, double v0_l1, bool right1, double v0_r1);
+    void set_border_f(bool left1, double f0_l1, bool right1, double f0_r1);
+    void set_print_parametres(bool printAnalitcalSolution, bool numberFormatIsdot, string& separator);
+
+    void solve();
 
 private:
+    int n;                          // n - number of nodes, (n-1) - number of cells
+    double Tmax;                    // Tmax - end time
+    double K;                       // K - bulk modulus
+    double G;                       // G - shear modulus
+    double E;                       // E - Young's modulus
+    double Nu;                      // Nu - Poisson's ratio
+    double c;                       // c - speed of sound
+    double l;                       // l - length
+    double ro0;                     // ro0 - initial density
+    double t;                       // t - time
+    double dt;                      // dt - time step distance between ti+1 - ti
+    double dt2;                     // dt2 - half time step distance between ti+1/2 - ti-1/2
+    vector<double> m_cell;          // m_cell - cell mass;
+    vector<double> m_dot;           // m_dot - nodal mass
+    vector<double> ro;              // ro - actual cell density
+    vector<double> x0;              // x0 - initial node coordinates
+    vector<double> x;               // x - node coordinates with time step dt
+    vector<double> x2;              // x2 - node coordinates with time step dt2
+    vector<double> v;               // v - node velocity
+    vector<double> u;               // u - node displacement
+    vector<double> f;               // f - node forces 
+    vector<double> psigm;           // psigm - spherical stress tensor
+    vector<vector<double>> dsigm;   // dsigm - stress tensor deviator
+    vector<vector<double>> sigma;   // sigma - full stress tensor
 
-    double K;        //  K      - модуль обьемного сжати€ 
-    double G;        //  G      - модуль сдвига
-    double E;        //  E      - модуль юнга
-    double Nu;       //  Nu     - кэф пуассона
-    double c;        //  c      - скорость звука в среде
-    int n;           //  n      - количество узлов, (n-1) - количество €чеек
-    double l;        //  l      - длинна пр€мой
-    double ro0;      //  ro0    - начальна€ плотность
-    double t;        //  t      - врем€
-    double dt;       //  dt     - шаг по времени рассто€ние между ti+1 - ti
-    double dt2;      //  dt2    - половинчатый шаг по времени рассто€ние между ti+1/2 - ti-1/2
-    vector<double> m_cell;  //  m_cell - масса €чейки; 
-    vector<double> m_dot;   //  m_dot  - узлова€ амсса
-    vector<double> ro;      //  ro     - плотность €чейки актуальна€
-    vector<double> x0;      //  x0     - начальные координаты узлов
-    vector<double> x;       //  x      - координаты узлов с целым шагом по времени
-    vector<double> x2;      //  x2     - кординаты узлов с половинным(промежуточным) шагом по времени
-    vector<double> v;       //  v      - скорость узла
-    vector<double> u;       //  u      - перемешешие узла
-    vector<double> f;       //  f      - силы в узлах
-    vector<double> psigm;   //  psigm  - шаровой тензор напр€жений
-    vector<vector<double>> dsigm;  //  dsigm  - девиатор тензора напр€жений
-    vector<vector<double>> sigma;  //  sigma  - полный тензор напр€жений
 
-    double Tmax;
+    bool is_v0_left, is_v0_right;   // are there boundary conditions on the left/right end for VELOCITY
+    double v0_l, v0_r;              // if there are, what is the speed set on it
 
-    bool is_v0_left, is_v0_right;  //  есть ли краевые услови€ на левом/правом конеце по — ќ–ќ—“»
-    double v0_l, v0_r;             //  если есть то кака€ на нем задана скорость скорость
+    bool is_f0_left, is_f0_right;   // are there boundary conditions on the left/right end for FORCE
+    double f0_l, f0_r;              // if there are, what is the force set on it
 
-    bool is_f0_left, is_f0_right;  //  есть ли краевые услови€ на левом/правом конеце по —»Ћ≈
-    double f0_l, f0_r;             //  если есть то кака€ на нем задана сила
+    bool printAS;                   // print analytical solution
+    bool numberFormat;              // print number in format 0.00 - true 0,00 - false
+    string sep;                     // separator in output
 
-    bool printAS; // печатать ли аналитическое решение
-    bool numberFormat;
-    string sep;
     AnalitcalSolution ana;
     fstream ffu;
     fstream ffs;
     int printCounter;
+
+    void printSelectedInformation();
+    void step();
 
     void set_border_v();
     void set_border_f();
@@ -63,16 +74,4 @@ private:
     void calc_forse();
     void calc_v();
     void correct_v();
-
-    void printSelectedInformation();
-    void step();
-public:
-    FEM(int _n, double _l, double _ro0, double _K, double _G,double _Tmax);
-
-    void set_border_v(bool left1, double v0_l1, bool right1, double v0_r1);
-    void set_border_f(bool left1, double f0_l1, bool right1, double f0_r1);
-    void set_print_parametres(bool printAnalitcalSolution, bool numberFormatIsdot, string& separator);
-
-    void solve();
-
 };

@@ -14,7 +14,7 @@ int main()
     double f0l = 0, f0r = 0, v0l = 0, v0r = 0;
     bool printAnalit = false;
     bool numberFormat = true;
-    string separator;
+    string separator = "";
 
 
     string s;
@@ -78,8 +78,6 @@ int main()
     cout <<endl<< "Press Enter"<<endl;
     cin.get();
     
-    
-
     return 0;
 }
 
