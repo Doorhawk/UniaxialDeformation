@@ -35,19 +35,27 @@ int main()
 
     if (n <=1 || Tmax <= 0 || l <= 0 || ro0 <= 0 || K <= 0 || G <= 0) {
         cout << "Error - parameter must be > 0 and n > 1";
+        cout << endl << "Press Enter" << endl;
+        cin.get();
         return -1;
     }
     if (leftF && leftV) {
         cout << "Error - only one condition is allowed - leftF or leftV";
+        cout << endl << "Press Enter" << endl;
+        cin.get();
         return -1;
     }
     if (rightF && rightV) {
         cout << "Error - only one condition is allowed - rightF or rightV";
+        cout << endl << "Press Enter" << endl;
+        cin.get();
         return -1;
     }
     if(printAnalit){
         if (!(rightF && leftV && !v0l)) {
             cout << "Error - you are trying printAnalit, it is possible only if rightF = 1 && leftV = 1 and v0l = 0, f0r!=0";
+            cout << endl << "Press Enter" << endl;
+            cin.get();
             return -1;
         }
     }
