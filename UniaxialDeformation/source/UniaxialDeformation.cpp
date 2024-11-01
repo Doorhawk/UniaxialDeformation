@@ -3,9 +3,6 @@
 #include <cstdio>
 #include "FiniteElementMethod.h"
 
-
-
-
 int main()
 {
     fstream fin("input/input.txt");

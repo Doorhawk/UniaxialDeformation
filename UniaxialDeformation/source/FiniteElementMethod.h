@@ -1,5 +1,6 @@
 #pragma once
 #include "AnalyticalSolution.h"
+#include "comma.h"
 #include <fstream>
 #include <string>
 #include <iomanip>

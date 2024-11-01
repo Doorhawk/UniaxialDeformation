@@ -1,6 +1,5 @@
 #pragma once
 #include <locale>
-
 class comma : public std::numpunct<char> {
 public:
     comma() : std::numpunct<char>() {}
