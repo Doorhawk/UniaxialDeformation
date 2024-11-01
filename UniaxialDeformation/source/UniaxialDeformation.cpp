@@ -110,6 +110,10 @@ int main()
     if (numberFormat) {
         changeNumberFormat();
     }
+    else {
+        remove("output/uOut1.csv");
+        remove("output/sOut1.csv");
+    }
     
     cout <<endl<< "Press Enter"<<endl;
     cin.get();
